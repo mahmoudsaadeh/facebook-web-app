@@ -1,0 +1,29 @@
+.global-container {
+    background-color: #F0F2F5;
+    
+    min-height: 100vh;
+    border: 1px solid transparent;//issue when removing border
+
+    //position: relative;
+}
+
+ul {
+    list-style-type: none;
+    //border: 2px solid rosybrown;
+    padding: 0;
+
+    width: 89%;
+    margin: 1em 4em;
+}
+
+li {
+    display: inline-block;
+
+    //border: 2px solid green;
+}
+
+
+
+
+
+
