@@ -1,13 +1,21 @@
 import './App.css';
 //import { CardGroup, Card, Container, Form, Button, Row, Col } from 'react-bootstrap';
 import React from 'react';
-import { Route, Switch, BrowserRouter, withRouter } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import FbSignInPage from './pages/fb-sign-in/fb-sign-in.component';
 import ForgotPasswordPage from './pages/forgot-password/forgot-password.component';
 import CreateAPage from './pages/create-a-page/create-a-page.component';
 import ChangeLanguagePage from './pages/change-language/change-language.component';
 import ChooseServicePage from './pages/choose-service/choose-service.component';
 import LogInPage from './pages/log-in/log-in.component';
+
+import ProfilePage from './pages/profile/profile.component';
+
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+import Header from './components/header/header.component';
+
+import { Redirect } from 'react-router-dom';
 
 /*
 xs, sm, md, lg
@@ -19,12 +27,63 @@ g-4: for spacing between cards
 
 // comment in jsx: {/*<FbSignInPage />*/}
 
-function App() {
+class App extends React.Component {
 
-  return (
-    <div>
-      
-      <BrowserRouter>
+  constructor() {
+    super();
+    this.state = {
+      currentUser: null
+    }
+  }
+
+  unsubscribeFromAuth = null;
+
+  componentDidMount() {
+    /*this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({ currentUser: user });
+
+      console.log(user);
+    });*/
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      // if userAuth is not null
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapshot => {
+          //console.log(snapshot);
+          //console.log(snapshot.data());
+          this.setState(
+            {
+              currentUser: {
+                id: snapshot.id,
+                ...snapshot.data()
+              }
+            }, 
+            () => {
+              console.log(this.state);
+            }
+          );
+        });
+      }
+      else {
+        this.setState({ currentUser: userAuth });
+      }
+    });
+
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+
         <Switch>
           <Route exact path='/' component={FbSignInPage} />
           <Route path='/forgot_password' component={ForgotPasswordPage} />
@@ -32,14 +91,21 @@ function App() {
           <Route path='/language-changing' component={ChangeLanguagePage} />
           <Route path='/chosen-service/:service_name' component={ChooseServicePage} />
           <Route path='/log-in-page' component={LogInPage} />
+          <Route path='/profile' component={ProfilePage} />
           
         </Switch>
-      </BrowserRouter>
-    </div>
-  );
+      </div>
+    );
+  }
+
 }
 
 export default App;
+
+/*
+<Route path='/profile' 
+            render={() => (this.state.currentUser ? <ProfilePage /> : <Redirect to='/' />)} />
+*/
 
 /*
 <div>

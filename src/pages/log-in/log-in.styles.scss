@@ -5,6 +5,8 @@
     padding: 11px 14px;
     font-weight: bold;
     font-size: large;
+
+    background-color: #0B5ED7;
 }
 
 .log-in-form-container {
@@ -116,7 +118,9 @@ input[type="email"]._input, input[type="password"]._input {
 
     @include button_styling();
 
-    
+    &:hover {
+        background-color: #0B5ED7;
+    }
 }
 
 .footer-external-container {

@@ -12,8 +12,8 @@ import { IoClose } from 'react-icons/io5';
 
 
 class CardsComponent extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             cards_content: CARDS_CONTENT
         }
