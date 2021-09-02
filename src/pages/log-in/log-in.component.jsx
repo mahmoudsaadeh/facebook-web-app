@@ -35,7 +35,7 @@ class LogInPage extends React.Component {
 
             alert("log in successful!");
 
-            this.props.history.push('/profile');
+            this.props.history.push('/');
         } catch (error) {
             console.error(error);
         }
@@ -68,7 +68,7 @@ class LogInPage extends React.Component {
                                         <Form.Control className='_input' name='password' type='password' value={this.state.password} autoComplete="on" onChange={this.handleChange} placeholder="Password" required />
                                     </Form.Group>
                                     <Button className='log-in-button btn btn-primary' type='submit' variant="success">
-                                        Sign Up
+                                        Log In
                                     </Button>
                                     <br />
 

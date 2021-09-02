@@ -11,7 +11,7 @@ import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import validator from 'validator';
 
-import { Link, Redirect } from 'react-router-dom';
+// import { Link, Redirect } from 'react-router-dom';
 
 
 class SignUpForm extends React.Component {
@@ -86,7 +86,7 @@ class SignUpForm extends React.Component {
             //<Redirect to='/profile' />
             this.props.handleClose();
             alert("Sign up successful!");
-
+            // this.props.history.push('/log-in-page');
         } catch (error) {
             console.error(error);
         }

@@ -11,6 +11,7 @@ import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import SignUpForm from '../sign-up-form/sign-up-form.component';
+import { auth } from '../../firebase/firebase.utils';
 
 //import { BrowserRouter } from 'react-router-dom';
 // import SignUpFormComponent from '../sign-up-form/sign-up-form.component';
@@ -24,18 +25,71 @@ const FormComponent = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    /*const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');*/
+
+    const [state, setState] = useState({ email: "", password: "" });
+
+    function handleChange(event) {
+        const { name, value } = event.target;
+        setState(prevState => ({ ...prevState, [name]: value }));
+    }
+
+    async function handleSubmit(event) {
+        // prevents the default actions of a form so that we have more control
+        // we specify when to submit or not
+        event.preventDefault();
+
+        try {
+            await auth.signInWithEmailAndPassword(state.email, state.password);
+            // clear state if signing in succeeds
+            /*setEmail('');
+            setPassword('');*/
+
+            alert("log in successful!");
+            this.props.handleClose();
+
+            this.props.history.push('/');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    /*function handleChange(event) {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
+
+    };*/
+
+    function checkIfEmpty() {
+        if ((state.email === '') && (state.password === '')) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
     return (
         <div>
-            <Form className='form' autoComplete='on'>
+            <Form className='form' autoComplete='on' onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control className='input_' type="email" placeholder="Email address or phone number" />
+                    <Form.Control className='input_' type="email" name='email' placeholder="Email address or phone number" onChange={handleChange} value={state.email} required />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Control className='input_' type="password" autoComplete="on" placeholder="Password" />
+                    <Form.Control className='input_' type="password" name='password' autoComplete="on" placeholder="Password" onChange={handleChange} value={state.password} required />
                 </Form.Group>
-                <Link className='log-in-button btn btn-primary' to='/log-in-page'>
-                    Log In
-                </Link>
+                {
+                    checkIfEmpty() ?
+                        <Link className='log-in-button btn btn-primary' to='/log-in-page'>
+                            Log In
+                        </Link>
+                        :
+                        <Button type='submit' variant="primary">
+                            Log In
+                        </Button>
+                }
                 <br />
 
                 <Link className='forgot-password' to='/forgot_password'>Forgotten password?</Link>
@@ -52,13 +106,19 @@ const FormComponent = () => {
             </div>
 
             <SignUpForm show={show} handleClose={handleClose} />
-            
+
         </div>
     );
 
 };
 
 export default FormComponent;
+
+/*
+<Link className='log-in-button btn btn-primary' to='/log-in-page'>
+                    Log In
+                </Link>
+*/
 
 /*
 <Modal
