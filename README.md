@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This is a facebook clone project and my first React big project. The aim behind it is to solidify my React skills and to gain more experience in frontend web development (mainly JS development using React).
+
 ## Available Scripts
 
 In the project directory, you can run:
